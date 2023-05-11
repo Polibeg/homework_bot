@@ -156,6 +156,7 @@ def main():
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     timestamp = int(time.time())
     STATUS = ''
+    ERROR = ''
     logger = logging.getLogger(__name__)
     console_handler = logging.StreamHandler()
     logger.addHandler(console_handler)
@@ -175,11 +176,11 @@ def main():
             time.sleep(RETRY_PERIOD)
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
-            logging.error(message)
-            if str(error) != str(STATUS):
+            logging.error(error)
+            message = str(error)
+            if message != ERROR:
                 send_message(bot, message)
-                STATUS = error
-
+                ERROR = error
         time.sleep(RETRY_PERIOD)
 
 
