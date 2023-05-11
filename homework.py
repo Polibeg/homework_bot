@@ -167,14 +167,19 @@ def main():
     while True:
         try:
             response = get_api_answer(timestamp)
-            get_api_answer = response.get('current_date')
+            timestamp = response.get('current_date')
             message = parse_status(check_response(response))
             if message != STATUS:
                 send_message(bot, message)
+                STATUS = message
             time.sleep(RETRY_PERIOD)
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
-            logging.error(message)
+            logging.error(message) 
+            if str(error) != str(STATUS):
+                send_message(bot, message)
+                STATUS = error
+                
         time.sleep(RETRY_PERIOD)
 
 
