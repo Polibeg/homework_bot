@@ -67,11 +67,9 @@ def send_message(bot, message):
     """
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
-        message = f'сообщение в чат {TELEGRAM_CHAT_ID}: {message}'
-        logging.info(message)
+        logger.info(f'сообщение в чат {TELEGRAM_CHAT_ID}: {message}')
     except Exception:
-        message = 'Ошибка отправки сообщения в телеграм чат'
-        logging.error(message)
+        logger.error('Ошибка отправки сообщения в телеграм чат')
 
 
 def get_api_answer(timestamp):
