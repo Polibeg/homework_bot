@@ -56,18 +56,15 @@ def check_tokens():
     Если отсутствует переменная окружения — False.
     Если всё в порядке — True.
     """
-
     if all([PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID]):
         return True
 
 
 def send_message(bot, message):
-    """Отправляет сообщение в чат,
-    определяемый TELEGRAM_CHAT_ID.
+    """Отправляет сообщение в чат.
     Принимает на вход два параметра:
     экземпляр класса Bot и тектовую строку.
     """
-
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
         message = f'сообщение в чат {TELEGRAM_CHAT_ID}: {message}'
@@ -83,7 +80,6 @@ def get_api_answer(timestamp):
     В случае успешного запроса должна вернуть ответ API,
     приведя его из формата JSON к типам данных Python.
     """
-
     timestamp = int(time.time())
     params = {'from_date': timestamp}
     try:
@@ -115,20 +111,19 @@ def check_response(response):
     то ф-ция должна вернуть список дом. работ, в API по ключу
     'homeworks'
     """
-
     if type(response) is not dict:
         raise TypeError('Ответ API отличается от словаря')
     try:
         list_my_works = response['homeworks']
     except KeyError:
         message = 'Ошибка словоря по ключу homeworks'
-        logging.error=(message)
+        logging.error = (message)
         raise KeyError(message)
     try:
         homework = list_my_works[0]
     except IndexError:
-        message='Список домашних работ пустой'
-        logging.error=(message)
+        message = 'Список домашних работ пустой'
+        logging.error = (message)
         raise IndexError(message)
     return homework
 
@@ -140,7 +135,6 @@ def parse_status(homework):
     В случае успеха, функция возвращает подготовленную для отправки
     в Telegram строку, содержащую один из вердиктов словаря HOMEWORK_VERDICTS.
     """
-    
     if 'homework_name' not in homework:
         message = 'Нет ключа "homework_name" в ответе API'
         logging.error(message)
@@ -182,6 +176,7 @@ def main():
             message = f'Сбой в работе программы: {error}'
             logging.error(message)
         time.sleep(RETRY_PERIOD)
+
 
 if __name__ == '__main__':
     main()
