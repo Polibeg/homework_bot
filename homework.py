@@ -189,6 +189,8 @@ def main():
                 send_message(bot, message)
             logger.error(message)
             time.sleep(RETRY_PERIOD)
+        finally:
+            time.sleep(RETRY_PERIOD)
 
 
 if __name__ == '__main__':
