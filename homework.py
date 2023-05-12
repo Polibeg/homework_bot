@@ -174,12 +174,11 @@ def main():
             time.sleep(RETRY_PERIOD)
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
-            logging.error(error)
-            message = str(error)
-            if message != ERROR:
+            if ERROR != str(error):
+                ERROR = str(error)
                 send_message(bot, message)
-                ERROR = error
-        time.sleep(RETRY_PERIOD)
+            logger.error(message)
+            time.sleep(RETRY_PERIOD)
 
 
 if __name__ == '__main__':
