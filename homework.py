@@ -110,7 +110,7 @@ def check_response(response):
     то ф-ция должна вернуть список дом. работ, в API по ключу
     'homeworks'
     """
-    if type(response) is not list:
+    if type(response) is not dict:
         raise TypeError('Ответ API отличается от словаря')
     try:
         list_my_works = response['homeworks']
