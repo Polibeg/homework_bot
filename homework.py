@@ -167,6 +167,10 @@ def main():
     while True:
         try:
             response = get_api_answer(timestamp)
+            homework = check_response(response)
+            if len(homework) == 0:
+                logging.debug('Ответ API пустой: нет домашних работ')
+                break
             timestamp = response.get('current_date')
             message = parse_status(check_response(response))
             if message != STATUS:
