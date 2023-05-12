@@ -115,7 +115,6 @@ def check_response(response):
     if 'homeworks' not in response:
         raise KeyError('Нет ключа "homeworks" в ответе')
     homeworks = response.get('homeworks')
-    current_date = response.get('current_date')
     if not isinstance(homeworks, list):
         raise TypeError('homeworks не является списком')
     return homeworks
