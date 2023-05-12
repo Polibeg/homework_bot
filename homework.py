@@ -177,10 +177,15 @@ def main():
                 logging.debug('Ответ API пустой: нет домашних работ')
                 break
             timestamp = response.get('current_date')
-            message = parse_status(check_response(response))
-            if message != STATUS:
-                send_message(bot, message)
-                STATUS = message
+            # message = parse_status(check_response(response))
+            # if message != STATUS:
+            #     send_message(bot, message)
+            #     STATUS = message
+            for homework in homeworks:
+                message = parse_status(homework)
+                if message != STATUS:
+                    send_message(bot, message)
+
             time.sleep(RETRY_PERIOD)
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
