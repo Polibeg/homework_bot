@@ -110,13 +110,25 @@ def check_response(response):
     то ф-ция должна вернуть список дом. работ, в API по ключу
     'homeworks'
     """
-    if not isinstance(response, dict):
-        raise TypeError('Ответ API - не словарь')
-    if 'homeworks' not in response:
-        raise KeyError('Нет ключа "homeworks" в ответе')
-    homeworks = response.get('homeworks')
-    if not isinstance(homeworks, list):
+    if type(response) is not dict:
+        raise TypeError('Ответ API отличается от словаря')
+    try:
+        list_my_works = response['homeworks']
+    except KeyError:
+        message = 'Ошибка словоря по ключу homeworks'
+        logging.error = (message)
+        raise KeyError(message)
+    try:
+        homework = list_my_works[0]
+    except IndexError:
+        message = 'Список домашних работ пустой'
+        logging.error = (message)
+        raise IndexError(message)
+    homework = response.get('homework')
+    current_date = response.get('current_date')
+    if not isinstance(current_date, int):
         raise TypeError('homeworks не является списком')
+    return homework
 
 
 def parse_status(homework):
@@ -146,6 +158,8 @@ def main():
     """Основная логика работы бота."""
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     timestamp = int(time.time())
+    STATUS = ''
+    ERROR = ''
     logger = logging.getLogger(__name__)
     console_handler = logging.StreamHandler()
     logger.addHandler(console_handler)
@@ -156,18 +170,23 @@ def main():
         raise Exception(message)
     while True:
         try:
-            homeworks = get_api_answer(timestamp)
-            homeworks_list = homeworks.get('homeworks')
-            if check_response(homeworks):
-                timestamp = homeworks.get('current_date')
-                message = parse_status(homeworks_list[0])
+            response = get_api_answer(timestamp)
+            homework = check_response(response)
+            if len(homework) == 0:
+                logging.debug('Ответ API пустой: нет домашних работ')
+                break
+            timestamp = response.get('current_date')
+            message = parse_status(check_response(response))
+            if message != STATUS:
                 send_message(bot, message)
+                STATUS = message
+            time.sleep(RETRY_PERIOD)
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
-            logging.error(message)
-            send_message(bot, message)
-
-        finally:
+            if ERROR != str(error):
+                ERROR = str(error)
+                send_message(bot, message)
+            logger.error(message)
             time.sleep(RETRY_PERIOD)
 
 
