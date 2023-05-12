@@ -111,9 +111,9 @@ def check_response(response):
     'homeworks'
     """
     if not isinstance(response, dict):
-        raise TypeError('Ответ API - не словарь')
+        raise TypeError('Ответ API отличается от словаря')
     if 'homeworks' not in response:
-        raise KeyError('Нет ключа "homeworks" в ответе')
+        raise KeyError('Ошибка словоря по ключу homeworks')
     homeworks = response.get('homeworks')
     if not isinstance(homeworks, list):
         raise TypeError('homeworks не является списком')
