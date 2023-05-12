@@ -70,7 +70,7 @@ def send_message(bot, message):
         logger.info(f'сообщение в чат {TELEGRAM_CHAT_ID}: {message}')
     except Exception:
         logger.error('Ошибка отправки сообщения в телеграм чат')
-    logger.info('Сообщение отправлено')
+    logger.debug('Сообщение отправлено')
 
 
 def get_api_answer(timestamp):
@@ -171,7 +171,6 @@ def main():
             if len(homeworks) == 0:
                 logging.debug('Ответ API пустой: нет домашних работ')
                 break
-
             timestamp = response.get('current_date')
             message = parse_status(check_response(response))
             if message != STATUS:
