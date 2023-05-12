@@ -161,7 +161,7 @@ def main():
     logger.debug('Бот заработал')
     if not check_tokens():
         message = 'Отсуствует как минимум одна переменная окружения'
-        logging.critical(message)
+        logger.critical(message)
         raise Exception(message)
     while True:
         try:
