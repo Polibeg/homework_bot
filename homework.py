@@ -148,10 +148,10 @@ def parse_status(homework):
         raise Exception(message)
     homework_name = homework['homework_name']
     homework_status = homework['status']
-    if homework_status in HOMEWORK_VERDICTS:
-        verdict = HOMEWORK_VERDICTS[homework_status]
-        return f'Изменился статус проверки работы "{homework_name}". {verdict}'
-    raise Exception(f'Неизвестный статус: {homework_status}')
+    if homework_status not in HOMEWORK_VERDICTS:
+        raise Exception(f'Неизвестный статус: {homework_status}')
+    verdict = HOMEWORK_VERDICTS[homework_status]
+    return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
 
 def main():
