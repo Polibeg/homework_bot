@@ -1,6 +1,7 @@
 
 import logging
 import os
+import sys
 
 import requests
 
@@ -147,35 +148,32 @@ def main():
     """Основная логика работы бота."""
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     timestamp = int(time.time())
-    STATUS = ''
-    ERROR = ''
     logger = logging.getLogger(__name__)
     console_handler = logging.StreamHandler()
     logger.addHandler(console_handler)
     logger.debug('Бот заработал')
-    if not check_tokens():
-        message = 'Отсуствует как минимум одна переменная окружения'
-        logger.critical(message)
-        raise Exception(message)
+    if check_tokens():
+        message = f'Отсутствуют токены: {check_tokens()}'
+        logging.critical(message)
+        sys.exit(message)
+
+    bot = telegram.Bot(token=TELEGRAM_TOKEN)
+    timestamp = int(time.time())
+
     while True:
         try:
-            response = get_api_answer(timestamp)
-            homeworks = check_response(response)
-            if len(homeworks) == 0:
-                logging.debug('Ответ API пустой: нет домашних работ')
-                break
-            timestamp = response.get('current_date')
-            message = parse_status(check_response(response))
-            if message != STATUS:
+            homeworks = get_api_answer(timestamp)
+            homeworks_list = homeworks.get('homeworks')
+            if check_response(homeworks):
+                timestamp = homeworks.get('current_date')
+                message = parse_status(homeworks_list[0])
                 send_message(bot, message)
-                STATUS = message
-            time.sleep(RETRY_PERIOD)
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
-            if ERROR != str(error):
-                ERROR = str(error)
-                send_message(bot, message)
-            logger.error(message)
+            logging.error(message)
+            send_message(bot, message)
+
+        finally:
             time.sleep(RETRY_PERIOD)
 
 
