@@ -115,7 +115,7 @@ def check_response(response):
         logging.error(message)
         raise TypeError(message)
 
-    if not isinstance(response.get, ('homeworks'), list):
+    if not isinstance(response.get,('homeworks'), list):
         message = 'homeworks не является списком'
         logging.error(message)
         raise TypeError(message)
