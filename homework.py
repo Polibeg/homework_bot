@@ -114,17 +114,17 @@ def check_response(response):
         message = 'Ответ API отличается от словаря'
         logging.error(message)
         raise TypeError(message)
-    
-    if not isinstance(response.get,('homeworks'), list):
+
+    if not isinstance(response.get, ('homeworks'), list):
         message = 'homeworks не является списком'
         logging.error(message)
         raise TypeError(message)
-    
+
     if not response:
         message = 'Содержит пустой словарь.'
         logging.error(message)
         raise KeyError(message)
-    
+
     if 'homeworks' not in response:
         message = 'Отсутствие ожидаемых ключей в ответе.'
         logging.error(message)
