@@ -152,8 +152,6 @@ def parse_status(homework):
         verdict = HOMEWORK_VERDICTS[homework_status]
         return f'Изменился статус проверки работы "{homework_name}". {verdict}'
     raise Exception(f'Неизвестный статус: {homework_status}')
-    
-    
 
 
 def main():
