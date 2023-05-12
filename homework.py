@@ -110,21 +110,25 @@ def check_response(response):
     то ф-ция должна вернуть список дом. работ, в API по ключу
     'homeworks'
     """
-    if type(response) is not dict:
-        raise TypeError('Ответ API отличается от словаря')
-    try:
-        list_my_works = response['homeworks']
-    except KeyError:
-        message = 'Ошибка словоря по ключу homeworks'
-        logging.error = (message)
+    if not isinstance(response, dict):
+        message = 'Ответ API отличается от словаря'
+        logging.error(message)
+        raise TypeError(message)
+    
+    if not isinstance(response.get,('homeworks'), list):
+        message = 'homeworks не является списком'
+        logging.error(message)
+        raise TypeError(message)
+    
+    if not response:
+        message = 'Содержит пустой словарь.'
+        logging.error(message)
         raise KeyError(message)
-    try:
-        homework = list_my_works[0]
-    except IndexError:
-        message = 'Список домашних работ пустой'
-        logging.error = (message)
-        raise IndexError(message)
-    return homework
+    
+    if 'homeworks' not in response:
+        message = 'Отсутствие ожидаемых ключей в ответе.'
+        logging.error(message)
+        raise KeyError(message)
 
 
 def parse_status(homework):
