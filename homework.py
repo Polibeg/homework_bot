@@ -156,10 +156,6 @@ def main():
         message = f'Отсутствуют токены: {check_tokens()}'
         logging.critical(message)
         sys.exit(message)
-
-    bot = telegram.Bot(token=TELEGRAM_TOKEN)
-    timestamp = int(time.time())
-
     while True:
         try:
             homeworks = get_api_answer(timestamp)
