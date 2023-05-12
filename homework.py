@@ -124,10 +124,6 @@ def check_response(response):
         message = 'Список домашних работ пустой'
         logging.error = (message)
         raise IndexError(message)
-    homework = response.get('homework')
-    current_date = response.get('current_date')
-    if not isinstance(current_date, int):
-        raise TypeError('homeworks не является списком')
     return homework
 
 
@@ -171,10 +167,11 @@ def main():
     while True:
         try:
             response = get_api_answer(timestamp)
-            homework = check_response(response)
-            if len(homework) == 0:
+            homeworks = check_response(response)
+            if len(homeworks) == 0:
                 logging.debug('Ответ API пустой: нет домашних работ')
                 break
+
             timestamp = response.get('current_date')
             message = parse_status(check_response(response))
             if message != STATUS:
