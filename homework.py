@@ -124,11 +124,12 @@ def check_response(response):
         message = 'Содержит пустой словарь.'
         logging.error(message)
         raise KeyError(message)
-
+    
     if 'homeworks' not in response:
         message = 'Отсутствие ожидаемых ключей в ответе.'
         logging.error(message)
         raise KeyError(message)
+    return response['homeworks']
 
 
 def parse_status(homework):
