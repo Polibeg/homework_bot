@@ -161,14 +161,16 @@ def parse_status(homework):
 
 def main():
     """Основная логика работы бота."""
-    bot = telegram.Bot(token=TELEGRAM_TOKEN)
-    timestamp = int(time.time())
-    STATUS = ''
-    ERROR = ''
     if not check_tokens():
         message = 'Отсуствует как минимум одна переменная окружения'
         logger.critical(message)
         raise Exception(message)
+    bot = telegram.Bot(token=TELEGRAM_TOKEN)
+    timestamp = int(time.time())
+    
+    STATUS = ''
+    ERROR = ''
+
     while True:
         try:
             response = get_api_answer(timestamp)
