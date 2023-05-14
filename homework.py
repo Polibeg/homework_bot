@@ -69,6 +69,7 @@ def send_message(bot, message):
     Принимает на вход два параметра:
     экземпляр класса Bot и тектовую строку.
     """
+    logging.debug(f'Отправка боту: {bot} сообщения: {message}')
     try:
         bot.send_message(TELEGRAM_CHAT_ID, message)
         logger.info(f'сообщение в чат {TELEGRAM_CHAT_ID}: {message}')
