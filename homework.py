@@ -1,4 +1,3 @@
-
 import logging
 import os
 
@@ -27,7 +26,10 @@ handler = RotatingFileHandler('my_logger.log',
                               encoding='UTF-8',
                               maxBytes=50000000,
                               backupCount=5)
+console_handler = logging.StreamHandler()
+logger.addHandler(console_handler)
 logger.addHandler(handler)
+logger.debug('Бот заработал')
 
 formatter = logging.Formatter(
     '%(asctime)s, %(levelname)s, %(message)s, %(lineno)d'
@@ -160,10 +162,6 @@ def main():
     timestamp = int(time.time())
     STATUS = ''
     ERROR = ''
-    logger = logging.getLogger(__name__)
-    console_handler = logging.StreamHandler()
-    logger.addHandler(console_handler)
-    logger.debug('Бот заработал')
     if not check_tokens():
         message = 'Отсуствует как минимум одна переменная окружения'
         logger.critical(message)
