@@ -56,8 +56,7 @@ def check_tokens():
     Если отсутствует переменная окружения — False.
     Если всё в порядке — True.
     """
-    if all([PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID]):
-        return True
+    return all((PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID))
 
 
 def send_message(bot, message):
@@ -177,23 +176,16 @@ def main():
                 logging.debug('Ответ API пустой: нет домашних работ')
                 break
             timestamp = response.get('current_date')
-            # message = parse_status(check_response(response))
-            # if message != STATUS:
-            #     send_message(bot, message)
-            #     STATUS = message
             for homework in homeworks:
                 message = parse_status(homework)
                 if message != STATUS:
                     send_message(bot, message)
-
-            time.sleep(RETRY_PERIOD)
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
             if ERROR != str(error):
                 ERROR = str(error)
                 send_message(bot, message)
             logger.error(message)
-            time.sleep(RETRY_PERIOD)
         finally:
             time.sleep(RETRY_PERIOD)
 
