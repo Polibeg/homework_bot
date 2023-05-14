@@ -94,12 +94,12 @@ def get_api_answer(timestamp):
     except Exception as error:
         message = f'Ошибка при запросе к основному API: {error}'
         logging.error(message)
-        raise Exception(message)
+        raise ConnectionError(message)
     if homework_status.status_code != HTTPStatus.OK:
         status_code = homework_status.status_code
         message = f'Ошибка {status_code}'
         logging.error(message)
-        raise Exception(message)
+        raise ConnectionAbortedError(message)
     try:
         return homework_status.json()
     except ValueError:
@@ -151,11 +151,11 @@ def parse_status(homework):
     if 'status' not in homework:
         message = 'Нет ключа "status" в ответе API'
         logging.error(message)
-        raise Exception(message)
+        raise KeyError(message)
     homework_name = homework['homework_name']
     homework_status = homework['status']
     if homework_status not in HOMEWORK_VERDICTS:
-        raise Exception(f'Неизвестный статус: {homework_status}')
+        raise NameError(f'Неизвестный статус: {homework_status}')
     verdict = HOMEWORK_VERDICTS[homework_status]
     return f'Изменился статус проверки работы "{homework_name}". {verdict}'
 
@@ -165,7 +165,7 @@ def main():
     if not check_tokens():
         message = 'Отсуствует как минимум одна переменная окружения'
         logger.critical(message)
-        raise Exception(message)
+        raise ValueError(message)
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     timestamp = int(time.time())
     
