@@ -27,8 +27,14 @@ handler = RotatingFileHandler('my_logger.log',
                               maxBytes=50000000,
                               backupCount=5)
 console_handler = logging.StreamHandler()
-logger.addHandler(console_handler)
+formatter = logging.Formatter(
+    '%(asctime)s, %(levelname)s, %(message)s, %(lineno)d'
+)
+handler.setFormatter(formatter)
+
 logger.addHandler(handler)
+logger.addHandler(console_handler)
+
 logger.debug('Бот заработал')
 
 formatter = logging.Formatter(
