@@ -168,7 +168,7 @@ def main():
         raise ValueError(message)
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     timestamp = int(time.time())
-    
+
     STATUS = ''
     ERROR = ''
 
