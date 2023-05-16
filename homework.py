@@ -168,6 +168,9 @@ def main():
         raise ValueError(message)
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     timestamp = int(time.time())
+    
+    status = ''
+    error_er = ''
 
     while True:
         try:
@@ -175,14 +178,18 @@ def main():
             homeworks = check_response(response)
             if len(homeworks) == 0:
                 logging.debug('Ответ API пустой: нет домашних работ')
-                break
+                continue
             timestamp = response.get('current_date')
             for homework in homeworks:
                 message = parse_status(homework)
-                if message:
+                if status != message:
+                   status = str(message)
+                if str(message):
                     send_message(bot, message)
         except Exception as error:
             message = f'Сбой в работе программы: {error}'
+            if error_er != error:
+                error_er = str(error)
             if str(error):
                 send_message(bot, message)
             logger.error(message)
