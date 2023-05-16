@@ -168,7 +168,7 @@ def main():
         raise ValueError(message)
     bot = telegram.Bot(token=TELEGRAM_TOKEN)
     timestamp = int(time.time())
-    
+
     status = ''
     error_er = ''
 
@@ -183,7 +183,7 @@ def main():
             for homework in homeworks:
                 message = parse_status(homework)
                 if status != message:
-                   status = str(message)
+                    status = str(message)
                 if str(message):
                     send_message(bot, message)
         except Exception as error:
